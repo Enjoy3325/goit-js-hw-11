@@ -1,6 +1,6 @@
 .gallery {
   display: flex;
-  /* width: calc(100px + (100–950) * ((100vw — 300px) / (1920–300))); */
+  width: calc(100px + (100–950) * ((100vw — 300px) / (1920–300)));
   margin: 0;
   gap: 30px;
   flex-wrap: wrap;
@@ -42,7 +42,8 @@
 } */
 .btn-submit {
   margin-left: 10px;
-  background-color: aqua;
+  background-color: rgb(7, 158, 163);
+  color: black;
   cursor: pointer;
   border-radius: 10px;
 }
@@ -78,7 +79,7 @@ img {
 }
 .load-more {
   display: block;
-  margin: 20px auto;
+  margin: 40px auto;
 
   text-align: center;
   width: 120px;

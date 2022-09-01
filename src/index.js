@@ -1,3 +1,5 @@
+// import SimpleLightbox from 'simplelightbox';
+// import 'simplelightbox/dist/simple-lightbox.min.css';
 import Notiflix from 'notiflix';
 
 import NewsApiService from './new-service';
@@ -30,11 +32,15 @@ async function onSearch(e) {
     const resultFetch = await newsApiService.fetchHits();
 
     if (resultFetch.data.hits.length === 0) {
+      refs.loadMore.classList.add('is-hidden');
       Notiflix.Notify.failure(
         'Sorry, there are no images matching your search query. Please try again.'
       );
       return;
     }
+    Notiflix.Notify.info(
+      `Hooray! We found ${resultFetch.data.totalHits} images.`
+    );
     galleryImage(resultFetch.data.hits);
     refs.loadMore.classList.remove('is-hidden');
   } catch (error) {}
@@ -49,7 +55,7 @@ async function onLoadMoreClick() {
       newsApiService.per_page * newsApiService.page >
       resultClik.data.totalHits
     ) {
-      Notiflix.Notify.info(
+      Notiflix.Notify.failure(
         "We're sorry, but you've reached the end of search results."
       );
       refs.loadMore.classList.add('is-hidden');

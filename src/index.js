@@ -48,6 +48,8 @@ async function onSearch(e) {
 
 // Функция кнопка показать больше картинок
 async function onLoadMoreClick() {
+  newsApiService.incrementPage();
+
   try {
     const resultClik = await newsApiService.fetchHits();
     newsApiService.incrementPage();

@@ -1,9 +1,14 @@
-// import SimpleLightbox from 'simplelightbox';
-// import 'simplelightbox/dist/simple-lightbox.min.css';
+import SimpleLightbox from 'simplelightbox';
+import 'simplelightbox/dist/simple-lightbox.min.css';
+
 import Notiflix from 'notiflix';
 
 import NewsApiService from './new-service';
 import './css/styles.css';
+var lightbox = new SimpleLightbox('.gallery a', {
+  captionDelay: 250,
+});
+
 // fetch(`${BASE_URL}${BASE_KEY}${OPTIONS}`)
 const refs = {
   searchForm: document.querySelector('.search-form'),
@@ -20,6 +25,7 @@ refs.loadMore.addEventListener('click', onLoadMoreClick);
 async function onSearch(e) {
   e.preventDefault();
   clearCards();
+
   console.log(e.target.elements.searchQuery.value);
   newsApiService.query = e.target.elements.searchQuery.value;
 
@@ -41,7 +47,9 @@ async function onSearch(e) {
     Notiflix.Notify.info(
       `Hooray! We found ${resultFetch.data.totalHits} images.`
     );
+
     galleryImage(resultFetch.data.hits);
+    lightbox.refresh();
     refs.loadMore.classList.remove('is-hidden');
   } catch (error) {}
 }
@@ -49,7 +57,6 @@ async function onSearch(e) {
 // Функция кнопка показать больше картинок
 async function onLoadMoreClick() {
   newsApiService.incrementPage();
-
   try {
     const resultClik = await newsApiService.fetchHits();
     newsApiService.incrementPage();
@@ -65,6 +72,7 @@ async function onLoadMoreClick() {
     }
 
     galleryImage(resultClik.data.hits);
+    lightbox.refresh();
     onScroll();
   } catch (error) {}
 }
@@ -76,8 +84,16 @@ function clearCards() {
 // Функция разметки, рендеринг
 function galleryImage(search) {
   const gallaryImageResult = search.map(
-    ({ webformatURL, tags, likes, views, comments, downloads }) => {
-      return ` <div class="photo-card">
+    ({
+      largeImageURL,
+      webformatURL,
+      tags,
+      likes,
+      views,
+      comments,
+      downloads,
+    }) => {
+      return ` <a class="list" href=${largeImageURL}><div class="photo-card">
    <img src=" ${webformatURL}" alt=" ${tags}" loading="lazy" />
    <div class="info">
      <p class="info-item">
@@ -93,11 +109,12 @@ function galleryImage(search) {
        <b>Downloads  ${downloads}</b>
      </p>
    </div>
- </div>`;
+ </div></a>`;
     }
   );
   refs.divGallery.insertAdjacentHTML('beforeend', gallaryImageResult.join(''));
 }
+
 function onScroll() {
   const { height: cardHeight } = document
     .querySelector('.gallery')

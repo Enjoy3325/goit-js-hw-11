@@ -72,8 +72,8 @@ b:last-child {
 
 img {
   display: block;
-  max-width: 100%;
-  height: auto;
+  width: 100%;
+  height: 200px;
   border-top-right-radius: 10px;
   border-top-left-radius: 10px;
 }
@@ -96,4 +96,8 @@ img {
 .load-more:focus {
   background-color: #09044a;
   color: #ffffff;
+}
+.list {
+  text-decoration: none;
+  color: black;
 }
